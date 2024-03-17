@@ -1,15 +1,15 @@
-// UsdExplainer
-#include "UsdExplainer.h"
+// UsdHighlighter
+#include "UsdHighlighter.h"
 #include <string>
 #include <iostream>
 
-UsdExplainer::UsdExplainer(QTextDocument *parent)
+UsdHighlighter::UsdHighlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
     initSyntaxRules();
 }
 
-void UsdExplainer::highlightBlock(const QString &text)
+void UsdHighlighter::highlightBlock(const QString &text)
 {
     qsizetype offset = 0;
     qsizetype length = text.length();

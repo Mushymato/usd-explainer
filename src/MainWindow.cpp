@@ -48,7 +48,7 @@ void MainWindow::setupEditor()
     editor = new QTextEdit;
     editor->setFont(font);
 
-    explainer = new UsdExplainer(editor->document());
+    explainer = new UsdHighlighter(editor->document());
 
     QFile file("test/Bogus.usd");
     if (file.open(QFile::ReadOnly | QFile::Text))

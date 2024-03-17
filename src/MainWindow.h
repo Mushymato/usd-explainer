@@ -2,7 +2,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "UsdExplainer.h"
+#include "UsdHighlighter.h"
 #include <QMainWindow>
 #include <QTextEdit>
 
@@ -24,7 +24,7 @@ private:
     void setupHelpMenu();
 
     QTextEdit *editor;
-    UsdExplainer *explainer;
+    UsdHighlighter *explainer;
 };
 
 #endif // MAINWINDOW_H

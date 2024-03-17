@@ -39,4 +39,4 @@ cmake/
 install/
 
 # test data
-test/Kitchen_set
+test

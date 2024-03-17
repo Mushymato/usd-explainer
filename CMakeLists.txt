@@ -8,7 +8,7 @@ qt_add_executable(
     ${CMAKE_PROJECT_NAME}
     src/Main.cpp
     src/MainWindow.h src/MainWindow.cpp
-    src/UsdExplainer.h src/UsdExplainer.cpp src/UsdExplainerSyntax.cpp
+    src/UsdHighlighter.h src/UsdHighlighter.cpp src/UsdHighlighterSyntax.cpp
 )
 
 set_target_properties(

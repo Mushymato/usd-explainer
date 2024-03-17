@@ -1,19 +1,19 @@
-// UsdExplainer widget
-#ifndef USDEXPLAINER_H
-#define USDEXPLAINER_H
+// UsdHighlighter widget
+#ifndef UsdHighlighter_H
+#define UsdHighlighter_H
 
 #include <QSyntaxHighlighter>
 #include <QTextDocument>
 #include <QTextCharFormat>
 #include <QRegularExpression>
 
-class UsdExplainer : public QSyntaxHighlighter
+class UsdHighlighter : public QSyntaxHighlighter
 {
     Q_OBJECT
 
 public:
-    // UsdExplainer(QObject *parent = nullptr);
-    UsdExplainer(QTextDocument *parent = nullptr);
+    // UsdHighlighter(QObject *parent = nullptr);
+    UsdHighlighter(QTextDocument *parent = nullptr);
 
 protected:
     void highlightBlock(const QString &text) override;
@@ -34,4 +34,4 @@ private:
     const SyntaxRule *multiRule = nullptr;
 };
 
-#endif // USDEXPLAINER_H
+#endif // UsdHighlighter_H
