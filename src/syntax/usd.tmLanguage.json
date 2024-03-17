@@ -83,16 +83,16 @@
         },
         {
           "name": "string.quoted.triple.asset.usd",
-          "begin": "(\\@\\@\\@)",
+          "begin": "\\@\\@\\@",
           "beginCaptures": {
             "1": {
               "name": "punctuation.definition.string.begin.asset.usd"
             }
           },
-          "end": "(\\1)",
+          "end": "\\@\\@\\@",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.string.end.asset.usd"
+              "name": "punctuation.definition.string.end.asset.usd"  
             }
           }
         },
@@ -142,26 +142,8 @@
           }
         },
         {
-          "begin": "(^[ \\t]+)?((#)(?:\\s*((@)internal)(?=\\s|$))?)",
-          "beginCaptures": {
-            "1": {
-              "name": "punctuation.whitespace.comment.leading.usd"
-            },
-            "2": {
-              "name": "comment.line.double-slash.usd"
-            },
-            "3": {
-              "name": "punctuation.definition.comment.usd"
-            },
-            "4": {
-              "name": "storage.type.internaldeclaration.usd"
-            },
-            "5": {
-              "name": "punctuation.decorator.internaldeclaration.usd"
-            }
-          },
-          "end": "(?=^)",
-          "contentName": "comment.line.hash.usd"
+          "name": "comment.line.hash.usd",
+          "match": "(^[ \\t]+)?((\\#)(?:\\s*((@)internal)(?=\\s|$))?).+"
         }
       ]
     }

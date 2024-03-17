@@ -21,13 +21,17 @@ protected:
 private:
     struct SyntaxRule
     {
+        QString name;
         QTextCharFormat format;
         QRegularExpression pattern;
         QRegularExpression patternEnd;
         bool isRange = false;
+        bool isMultiline = false;
     };
     QList<SyntaxRule> syntaxRules;
+    // QList<SyntaxRule> multilineRules;
     void initSyntaxRules();
+    const SyntaxRule *multiRule = nullptr;
 };
 
 #endif // USDEXPLAINER_H

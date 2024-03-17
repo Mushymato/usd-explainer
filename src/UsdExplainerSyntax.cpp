@@ -5,108 +5,107 @@ void UsdExplainer::initSyntaxRules()
 {
     SyntaxRule rule = SyntaxRule();
     QTextCharFormat format = QTextCharFormat();
-    // keyword.control.usd
-    rule.pattern = QRegularExpression(QStringLiteral("\\b(def|over|class|variantSet)\\b"));
+    rule.name = QStringLiteral("keyword.control.usd");    rule.pattern = QRegularExpression(QStringLiteral("\\b(def|over|class|variantSet)\\b"));
     rule.isRange = false;
-    format.setForeground(QColor(66, 107, 188));
+    rule.isMultiline = false;
+    format.setForeground(QColor(116, 157, 238));
     format.setFontWeight(QFont::Weight::Bold);
     rule.format = format;
     syntaxRules.append(rule);
-    // keyword.operator.usd
-    rule.pattern = QRegularExpression(QStringLiteral("\\b(add|append|prepend|delete)\\b"));
+    rule.name = QStringLiteral("keyword.operator.usd");    rule.pattern = QRegularExpression(QStringLiteral("\\b(add|append|prepend|delete)\\b"));
     rule.isRange = false;
-    format.setForeground(QColor(31, 199, 245));
+    rule.isMultiline = false;
+    format.setForeground(QColor(81, 249, 255));
     rule.format = format;
     syntaxRules.append(rule);
-    // keyword.import.usd
-    rule.pattern = QRegularExpression(QStringLiteral("\\#usda\\W[0-9]+.[0-9]"));
+    rule.name = QStringLiteral("keyword.import.usd");    rule.pattern = QRegularExpression(QStringLiteral("\\#usda\\W[0-9]+.[0-9]"));
     rule.isRange = false;
-    format.setForeground(QColor(238, 73, 18));
+    rule.isMultiline = false;
+    format.setForeground(QColor(255, 123, 68));
     rule.format = format;
     syntaxRules.append(rule);
-    // keyword.other.usd
-    rule.pattern = QRegularExpression(QStringLiteral("\\b(attributes|config|connect|customData|default|dictionary|displayUnit|doc|inherits|kind|mapper|nameChildren|None|offset|payload|permission|prefixSubstitutions|properties|references|relocates|reorder|rootPrims|scale|subLayers|suffixSubstitutions|specializes|symmetryArguments|symmetryFunction|timeSamples|variants|variantSets)\\b"));
+    rule.name = QStringLiteral("keyword.other.usd");    rule.pattern = QRegularExpression(QStringLiteral("\\b(attributes|config|connect|customData|default|dictionary|displayUnit|doc|inherits|kind|mapper|nameChildren|None|offset|payload|permission|prefixSubstitutions|properties|references|relocates|reorder|rootPrims|scale|subLayers|suffixSubstitutions|specializes|symmetryArguments|symmetryFunction|timeSamples|variants|variantSets)\\b"));
     rule.isRange = false;
-    format.setForeground(QColor(210, 164, 112));
+    rule.isMultiline = false;
+    format.setForeground(QColor(255, 214, 162));
     rule.format = format;
     syntaxRules.append(rule);
-    // storage.type.usd.base
-    rule.pattern = QRegularExpression(QStringLiteral("\\b(bool|uchar|int|uint|int64|uint64|half|float|double|string|token|asset|matrix2d|matrix3d|matrix4d|quatd|quatf|quath|double2|float2|half2|int2|double3|float3|half3|int3|double4|float4|half4|int4|rel)\\b"));
+    rule.name = QStringLiteral("storage.type.usd.base");    rule.pattern = QRegularExpression(QStringLiteral("\\b(bool|uchar|int|uint|int64|uint64|half|float|double|string|token|asset|matrix2d|matrix3d|matrix4d|quatd|quatf|quath|double2|float2|half2|int2|double3|float3|half3|int3|double4|float4|half4|int4|rel)\\b"));
     rule.isRange = false;
-    format.setForeground(QColor(28, 127, 80));
+    rule.isMultiline = false;
+    format.setForeground(QColor(78, 177, 130));
     format.setFontWeight(QFont::Weight::Normal);
     rule.format = format;
     syntaxRules.append(rule);
-    // storage.type.usd.ext
-    rule.pattern = QRegularExpression(QStringLiteral("\\b(point3d|point3f|point3h|normal3d|normal3f|normal3h|vector3d|vector3f|vector3h|color3d|color3f|color3h|color4d|color4f|color4h|frame4d|texCoord2h|texCoord2d|texCoord2f|texCoord3h|texCoord3d|texCoord3f)\\b"));
+    rule.name = QStringLiteral("storage.type.usd.ext");    rule.pattern = QRegularExpression(QStringLiteral("\\b(point3d|point3f|point3h|normal3d|normal3f|normal3h|vector3d|vector3f|vector3h|color3d|color3f|color3h|color4d|color4f|color4h|frame4d|texCoord2h|texCoord2d|texCoord2f|texCoord3h|texCoord3d|texCoord3f)\\b"));
     rule.isRange = false;
-    format.setForeground(QColor(249, 73, 5));
+    rule.isMultiline = false;
+    format.setForeground(QColor(255, 123, 55));
     rule.format = format;
     syntaxRules.append(rule);
-    // storage.modifier.usd
-    rule.pattern = QRegularExpression(QStringLiteral("\\b(varying|uniform|custom)\\b"));
+    rule.name = QStringLiteral("storage.modifier.usd");    rule.pattern = QRegularExpression(QStringLiteral("\\b(varying|uniform|custom)\\b"));
     rule.isRange = false;
-    format.setForeground(QColor(138, 85, 130));
+    rule.isMultiline = false;
+    format.setForeground(QColor(188, 135, 180));
     rule.format = format;
     syntaxRules.append(rule);
-    // variable.parameter.usda
-    rule.pattern = QRegularExpression(QStringLiteral("[a-zA-Z_:][a-zA-Z0-9_:]*"));
+    rule.name = QStringLiteral("variable.parameter.usda");    rule.pattern = QRegularExpression(QStringLiteral("[a-zA-Z_:][a-zA-Z0-9_:]*"));
     rule.isRange = false;
-    format.setForeground(QColor(224, 66, 38));
+    rule.isMultiline = false;
+    format.setForeground(QColor(255, 116, 88));
     rule.format = format;
     syntaxRules.append(rule);
-    // constant.numeric.float.usda
-    rule.pattern = QRegularExpression(QStringLiteral("((0(x|X)[0-9a-fA-F]*)|-?(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)"));
+    rule.name = QStringLiteral("constant.numeric.float.usda");    rule.pattern = QRegularExpression(QStringLiteral("((0(x|X)[0-9a-fA-F]*)|-?(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)"));
     rule.isRange = false;
-    format.setForeground(QColor(42, 27, 226));
+    rule.isMultiline = false;
+    format.setForeground(QColor(92, 77, 255));
     rule.format = format;
     syntaxRules.append(rule);
-    // constant.character.escape.usd
-    rule.pattern = QRegularExpression(QStringLiteral("\\\\."));
+    rule.name = QStringLiteral("constant.character.escape.usd");    rule.pattern = QRegularExpression(QStringLiteral("\\\\."));
     rule.isRange = false;
-    format.setForeground(QColor(216, 232, 95));
+    rule.isMultiline = false;
+    format.setForeground(QColor(255, 255, 145));
     rule.format = format;
     syntaxRules.append(rule);
-    // string.quoted.triple.asset.usd
-    rule.pattern = QRegularExpression(QStringLiteral("(\\@\\@\\@)"));
-    rule.patternEnd = QRegularExpression(QStringLiteral("(\\1)"));
+    rule.name = QStringLiteral("string.quoted.triple.asset.usd");    rule.pattern = QRegularExpression(QStringLiteral("\\@\\@\\@"));
+    rule.patternEnd = QRegularExpression(QStringLiteral("\\@\\@\\@"));
     rule.isRange = true;
-    format.setForeground(QColor(114, 59, 250));
+    rule.isMultiline = false;
+    format.setForeground(QColor(190, 87, 232));
     rule.format = format;
     syntaxRules.append(rule);
-    // string.quoted.double.usd
-    rule.pattern = QRegularExpression(QStringLiteral("\""));
+    rule.name = QStringLiteral("string.quoted.double.usd");    rule.pattern = QRegularExpression(QStringLiteral("\""));
     rule.patternEnd = QRegularExpression(QStringLiteral("\""));
     rule.isRange = true;
-    format.setForeground(QColor(212, 181, 68));
+    rule.isMultiline = false;
+    format.setForeground(QColor(190, 87, 232));
     rule.format = format;
     syntaxRules.append(rule);
-    // string.quoted.double.asset.usd
-    rule.pattern = QRegularExpression(QStringLiteral("@"));
+    rule.name = QStringLiteral("string.quoted.double.asset.usd");    rule.pattern = QRegularExpression(QStringLiteral("@"));
     rule.patternEnd = QRegularExpression(QStringLiteral("@"));
     rule.isRange = true;
-    format.setForeground(QColor(229, 232, 178));
+    rule.isMultiline = false;
+    format.setForeground(QColor(190, 87, 232));
     rule.format = format;
     syntaxRules.append(rule);
-    // string.quoted.double.path.usd
-    rule.pattern = QRegularExpression(QStringLiteral("<"));
+    rule.name = QStringLiteral("string.quoted.double.path.usd");    rule.pattern = QRegularExpression(QStringLiteral("<"));
     rule.patternEnd = QRegularExpression(QStringLiteral(">"));
     rule.isRange = true;
-    format.setForeground(QColor(242, 197, 221));
+    rule.isMultiline = false;
+    format.setForeground(QColor(190, 87, 232));
     rule.format = format;
     syntaxRules.append(rule);
-    // comment.block.usd
-    rule.pattern = QRegularExpression(QStringLiteral("(/\\*)(?:\\s*((@)internal)(?=\\s|(\\*/)))?"));
+    rule.name = QStringLiteral("comment.block.usd");    rule.pattern = QRegularExpression(QStringLiteral("(/\\*)(?:\\s*((@)internal)(?=\\s|(\\*/)))?"));
     rule.patternEnd = QRegularExpression(QStringLiteral("\\*/"));
     rule.isRange = true;
-    format.setForeground(QColor(27, 250, 39));
+    rule.isMultiline = true;
+    format.setForeground(QColor(63, 217, 168));
     rule.format = format;
     syntaxRules.append(rule);
-    // comment.line.hash.usd
-    rule.pattern = QRegularExpression(QStringLiteral("(^[ \\t]+)?((#)(?:\\s*((@)internal)(?=\\s|$))?)"));
-    rule.patternEnd = QRegularExpression(QStringLiteral("(?=^)"));
-    rule.isRange = true;
-    format.setForeground(QColor(252, 237, 236));
+    rule.name = QStringLiteral("comment.line.hash.usd");    rule.pattern = QRegularExpression(QStringLiteral("(^[ \\t]+)?((\\#)(?:\\s*((@)internal)(?=\\s|$))?).+"));
+    rule.isRange = false;
+    rule.isMultiline = false;
+    format.setForeground(QColor(63, 217, 168));
     rule.format = format;
     syntaxRules.append(rule);
 }

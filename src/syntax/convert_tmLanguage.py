@@ -4,7 +4,9 @@ from hashlib import sha256
 
 def hash_color(name):
     hashbytes = sha256(name.encode("UTF-8")).digest()
-    return [int.from_bytes((bt,), byteorder="big") for bt in hashbytes[-3:]]
+    return [
+        min(255, int.from_bytes((bt,), byteorder="big") + 50) for bt in hashbytes[-3:]
+    ]
 
 
 def write_regex(expr, fn, member):
@@ -16,7 +18,7 @@ def write_regex(expr, fn, member):
 
 
 def write_color(name, category, is_range, fn):
-    if is_range == "range":
+    if is_range or category == "comment":
         color = hash_color(category)
     else:
         color = hash_color(name)
@@ -27,9 +29,12 @@ def write_cpp_block(pattern, category, fn, is_bold):
     """Write a block of C++ code that define and append syntax rule"""
     name = pattern.get("name", pattern.get("contentName")) or "unnamed rule"
     if name:
-        fn.write("    // ")
+        # fn.write("    // ")
+        # fn.write(name)
+        # fn.write("\n")
+        fn.write('    rule.name = QStringLiteral("')
         fn.write(name)
-        fn.write("\n")
+        fn.write('");')
     try:
         is_range = False
         write_regex(pattern["match"], fn, "pattern")
@@ -39,6 +44,10 @@ def write_cpp_block(pattern, category, fn, is_bold):
         write_regex(pattern["begin"], fn, "pattern")
         write_regex(pattern["end"], fn, "patternEnd")
         fn.write("    rule.isRange = true;\n")
+    if name == "comment.block.usd":
+        fn.write("    rule.isMultiline = true;\n")
+    else:
+        fn.write("    rule.isMultiline = false;\n")
     write_color(name, category, is_range, fn)
     if category == "keywords":
         if not is_bold:

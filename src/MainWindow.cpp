@@ -50,7 +50,7 @@ void MainWindow::setupEditor()
 
     explainer = new UsdExplainer(editor->document());
 
-    QFile file("test/Kitchen_set/Kitchen_set.usd");
+    QFile file("test/Bogus.usd");
     if (file.open(QFile::ReadOnly | QFile::Text))
         editor->setPlainText(file.readAll());
 }
