@@ -9,6 +9,7 @@ qt_add_executable(
     src/Main.cpp
     src/MainWindow.h src/MainWindow.cpp
     src/UsdHighlighter.h src/UsdHighlighter.cpp src/UsdHighlighterSyntax.cpp
+    src/UsdTextEdit.h src/UsdTextEdit.cpp
 )
 
 set_target_properties(

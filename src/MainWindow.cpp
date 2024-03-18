@@ -32,9 +32,7 @@ void MainWindow::openFile(const QString &path)
 
     if (!fileName.isEmpty())
     {
-        QFile file(fileName);
-        if (file.open(QFile::ReadOnly | QFile::Text))
-            editor->setPlainText(file.readAll());
+        editor->setUsdFile(fileName);
     }
 }
 
@@ -45,14 +43,12 @@ void MainWindow::setupEditor()
     font.setFixedPitch(true);
     font.setPointSize(10);
 
-    editor = new QTextEdit;
+    editor = new UsdTextEdit;
     editor->setFont(font);
 
-    explainer = new UsdHighlighter(editor->document());
+    highlighter = new UsdHighlighter(editor->document());
 
-    QFile file("test/Bogus.usd");
-    if (file.open(QFile::ReadOnly | QFile::Text))
-        editor->setPlainText(file.readAll());
+    editor->setUsdFile("test/bogus.usda");
 }
 
 void MainWindow::setupFileMenu()

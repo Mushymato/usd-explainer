@@ -3,8 +3,8 @@
 #define MAINWINDOW_H
 
 #include "UsdHighlighter.h"
+#include "UsdTextEdit.h"
 #include <QMainWindow>
-#include <QTextEdit>
 
 class MainWindow : public QMainWindow
 {
@@ -23,8 +23,8 @@ private:
     void setupFileMenu();
     void setupHelpMenu();
 
-    QTextEdit *editor;
-    UsdHighlighter *explainer;
+    UsdTextEdit *editor;
+    UsdHighlighter *highlighter;
 };
 
 #endif // MAINWINDOW_H
