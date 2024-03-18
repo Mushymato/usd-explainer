@@ -1,6 +1,5 @@
 // UsdHighlighter
 #include "UsdHighlighter.h"
-#include <iostream>
 
 UsdHighlighter::UsdHighlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
@@ -120,13 +119,10 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
 
 void UsdHighlighter::highlightBlock(const QString &text)
 {
-    std::cout << "BLOCK: '" << text.toStdString() << "'\n";
+    // std::cout << "BLOCK: '" << text.toStdString() << "'\n";
     UsdTextBlockData *blockData = processBlock(text);
     for (const SubBlock &subBlock : std::as_const(blockData->subBlocks))
     {
-        std::cout << "subBlock " << subBlock.start << "+" << subBlock.length << "\n"
-                  << "\trule: " << subBlock.rule->name.toStdString() << "\n"
-                  << "\tcontent '" << subBlock.content.toStdString() << "'\n";
         setFormat(subBlock.start, subBlock.length, subBlock.rule->format);
     }
 
