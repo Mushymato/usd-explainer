@@ -18,8 +18,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
-    void printTextBlockData(QPoint pos);
-    QTextCursor previousTextCursor;
+    void printTextBlockData(QTextCursor currentCursor, QPoint pos);
+    void handleTextCursorChange();
 };
 
 #endif // USDEDIT_H

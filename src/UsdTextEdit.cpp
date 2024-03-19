@@ -8,8 +8,7 @@
 
 UsdTextEdit::UsdTextEdit(QWidget *parent) : QTextEdit(parent)
 {
-    // QObject::connect(this, &UsdTextEdit::cursorPositionChanged, this, &UsdTextEdit::printTextBlockData);
-    // setMouseTracking(true);
+    QObject::connect(this, &UsdTextEdit::cursorPositionChanged, this, &UsdTextEdit::handleTextCursorChange);
 }
 
 void UsdTextEdit::setUsdFile(const QString &filePath)
@@ -21,9 +20,8 @@ void UsdTextEdit::setUsdFile(const QString &filePath)
     }
 }
 
-void UsdTextEdit::printTextBlockData(QPoint pos)
+void UsdTextEdit::printTextBlockData(QTextCursor currentCursor, QPoint pos)
 {
-    QTextCursor currentCursor = textCursor();
     QTextBlock block = currentCursor.block();
     UsdHighlighter::UsdTextBlockData *blockData = (UsdHighlighter::UsdTextBlockData *)block.userData();
     int positionInBlock = currentCursor.positionInBlock();
@@ -34,12 +32,21 @@ void UsdTextEdit::printTextBlockData(QPoint pos)
         if (subBlock.start <= positionInBlock && subBlock.start + subBlock.length > positionInBlock)
         {
             UsdHighlighter::SubBlock::debugPrint(subBlock);
-            QToolTip::showText(pos, UsdHighlighter::SubBlock::descriptionText(subBlock));
+            QToolTip::showText(pos, UsdHighlighter::SubBlock::descriptionText(subBlock), this);
         }
     }
 }
 
 void UsdTextEdit::mouseReleaseEvent(QMouseEvent *event)
 {
-    printTextBlockData(event->globalPosition().toPoint());
+    QTextCursor currentCursor = textCursor();
+    printTextBlockData(currentCursor, event->globalPosition().toPoint());
+}
+
+void UsdTextEdit::handleTextCursorChange()
+{
+    QTextCursor currentCursor = textCursor();
+    QRect rect = cursorRect(currentCursor);
+    QPoint pos = viewport()->mapToGlobal(rect.bottomLeft());
+    printTextBlockData(currentCursor, pos);
 }
