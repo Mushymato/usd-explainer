@@ -8,7 +8,8 @@ qt_add_executable(
     ${CMAKE_PROJECT_NAME}
     src/Main.cpp
     src/MainWindow.h src/MainWindow.cpp
-    src/UsdHighlighter.h src/UsdHighlighter.cpp src/UsdHighlighterSyntax.cpp
+    src/UsdHighlighter.h src/UsdHighlighter.cpp
+    src/UsdHighlighterSyntax.h src/UsdHighlighterSyntax.cpp
     src/UsdTextEdit.h src/UsdTextEdit.cpp
 )
 

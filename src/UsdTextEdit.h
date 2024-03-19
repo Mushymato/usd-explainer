@@ -14,8 +14,8 @@ public:
 public slots:
     void setUsdFile(const QString &filePath);
 
-protected:
-    void mouseReleaseEvent(QMouseEvent *event) override;
+    // protected:
+    //     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     void printTextBlockData(QTextCursor currentCursor, QPoint pos);

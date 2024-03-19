@@ -4,7 +4,6 @@
 UsdHighlighter::UsdHighlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
-    initSyntaxRules();
 }
 
 UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &text)
@@ -25,23 +24,17 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
         result = multiRule->patternEnd.match(text, offset = offset);
         if (result.hasMatch()) // found end, no longer multiline
         {
-            // setFormat(0, result.capturedEnd(), multiRule->format);
             subBlock = (SubBlock){.rule = multiRule,
-                                  .content = text.sliced(0, result.capturedEnd() - result.capturedLength()),
-                                  .start = 0,
-                                  .length = result.capturedEnd()};
+                                  .range = RANGE(0, result.capturedEnd()),
+                                  .captures = QList<RANGE>()};
             blockData->subBlocks.append(subBlock);
             offset = result.capturedEnd();
         }
         else
         { // no end, continue
-            // setFormat(0, length, multiRule->format);
             subBlock = (SubBlock){.rule = multiRule,
-                                  .content = text.sliced(
-                                      result.capturedEnd(),
-                                      length - result.capturedEnd()),
-                                  .start = 0,
-                                  .length = length};
+                                  .range = RANGE(0, length),
+                                  .captures = QList<RANGE>()};
             blockData->subBlocks.append(subBlock);
             return blockData;
         }
@@ -51,7 +44,7 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
     {
         minRule = nullptr;
         minMatch = QRegularExpressionMatch();
-        for (const SyntaxRule &rule : std::as_const(syntaxRules))
+        for (const SyntaxRule &rule : std::as_const(UsdHighlighterSyntax::getInstance().syntaxRules))
         {
             result = rule.pattern.match(text, offset = offset);
             if (result.hasMatch())
@@ -76,13 +69,9 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
             if (result.hasMatch())
             {
                 // found end match on this line
-                // setFormat(minMatch.capturedStart(), result.capturedEnd() - minMatch.capturedStart(), minRule->format);
                 subBlock = (SubBlock){.rule = minRule,
-                                      .content = text.sliced(
-                                          minMatch.capturedEnd(),
-                                          result.capturedStart() - minMatch.capturedEnd()),
-                                      .start = minMatch.capturedStart(),
-                                      .length = result.capturedEnd() - minMatch.capturedStart()};
+                                      .range = RANGE(minMatch.capturedStart(), result.capturedEnd() - minMatch.capturedStart()),
+                                      .captures = QList<RANGE>()};
                 blockData->subBlocks.append(subBlock);
                 offset = result.capturedEnd();
             }
@@ -90,13 +79,9 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
             {
                 // no end found, but rule is multiline so continue to next text block
                 multiRule = minRule;
-                // setFormat(minMatch.capturedStart(), length, multiRule->format);
                 subBlock = (SubBlock){.rule = multiRule,
-                                      .content = text.sliced(
-                                          minMatch.capturedEnd(),
-                                          length - minMatch.capturedEnd()),
-                                      .start = minMatch.capturedStart(),
-                                      .length = length - minMatch.capturedStart()};
+                                      .range = RANGE(minMatch.capturedStart(), length - minMatch.capturedStart()),
+                                      .captures = QList<RANGE>()};
                 blockData->subBlocks.append(subBlock);
                 return blockData;
             }
@@ -104,11 +89,13 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
         else
         {
             // not range, update format & offset with this match
-            // setFormat(minMatch.capturedStart(), minMatch.capturedLength(), minRule->format);
             subBlock = (SubBlock){.rule = minRule,
-                                  .content = minMatch.captured(1),
-                                  .start = minMatch.capturedStart(),
-                                  .length = minMatch.capturedLength()};
+                                  .range = RANGE(minMatch.capturedStart(), minMatch.capturedLength()),
+                                  .captures = QList<RANGE>()};
+            for (int i = 1; i <= minRule->pattern.captureCount(); i++)
+            {
+                subBlock.captures.append(std::pair(minMatch.capturedStart(i), minMatch.capturedLength(i)));
+            }
             blockData->subBlocks.append(subBlock);
         }
     }
@@ -119,12 +106,28 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
 
 void UsdHighlighter::highlightBlock(const QString &text)
 {
-    // std::cout << "BLOCK: '" << text.toStdString() << "'\n";
     UsdTextBlockData *blockData = processBlock(text);
+    // std::cout << "BLOCK: '" << text.toStdString() << "'\n";
     for (const SubBlock &subBlock : std::as_const(blockData->subBlocks))
     {
-        setFormat(subBlock.start, subBlock.length, subBlock.rule->format);
+        // UsdHighlighter::SubBlock::debugPrint(subBlock);
+        setFormat(subBlock.range.first, subBlock.range.second, subBlock.rule->styles[0]);
+        for (int i = 0; i < subBlock.captures.length(); i++)
+        {
+            RANGE range = subBlock.captures[i];
+            if (range.first == -1)
+            {
+                continue;
+            }
+            if (i + 1 < subBlock.rule->styles.length())
+            {
+                setFormat(range.first, range.second, subBlock.rule->styles[i + 1]);
+            }
+            else
+            {
+                setFormat(range.first, range.second, subBlock.rule->styles[0]);
+            }
+        }
     }
-
     setCurrentBlockUserData(blockData);
 }

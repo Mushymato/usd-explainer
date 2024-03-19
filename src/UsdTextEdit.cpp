@@ -23,30 +23,32 @@ void UsdTextEdit::setUsdFile(const QString &filePath)
 void UsdTextEdit::printTextBlockData(QTextCursor currentCursor, QPoint pos)
 {
     QTextBlock block = currentCursor.block();
-    UsdHighlighter::UsdTextBlockData *blockData = (UsdHighlighter::UsdTextBlockData *)block.userData();
+    if (!block.isValid() || !block.isVisible())
+        return;
     int positionInBlock = currentCursor.positionInBlock();
-    std::cout << "printTextBlockData: " << positionInBlock << " (" << pos.x() << ", " << pos.y() << ")\n";
-    //  blockData->debugPrint();
+    std::cout << "printTextBlockData: '" << block.text().toStdString() << "' pos: " << positionInBlock << "\n";
+    UsdHighlighter::UsdTextBlockData *blockData = (UsdHighlighter::UsdTextBlockData *)block.userData();
+    UsdHighlighter::UsdTextBlockData::debugPrint(*blockData);
     for (UsdHighlighter::SubBlock &subBlock : blockData->subBlocks)
     {
-        if (subBlock.start <= positionInBlock && subBlock.start + subBlock.length > positionInBlock)
+        if (subBlock.range.first <= positionInBlock && subBlock.range.first + subBlock.range.second > positionInBlock)
         {
             UsdHighlighter::SubBlock::debugPrint(subBlock);
-            QToolTip::showText(pos, UsdHighlighter::SubBlock::descriptionText(subBlock), this);
+            QToolTip::showText(pos, UsdHighlighter::SubBlock::descriptionText(subBlock, block.text()), this);
         }
     }
 }
 
-void UsdTextEdit::mouseReleaseEvent(QMouseEvent *event)
-{
-    QTextCursor currentCursor = textCursor();
-    printTextBlockData(currentCursor, event->globalPosition().toPoint());
-}
+// void UsdTextEdit::mouseReleaseEvent(QMouseEvent *event)
+// {
+//     QTextCursor currentCursor = textCursor();
+//     printTextBlockData(currentCursor, event->globalPosition().toPoint());
+// }
 
 void UsdTextEdit::handleTextCursorChange()
 {
     QTextCursor currentCursor = textCursor();
     QRect rect = cursorRect(currentCursor);
-    QPoint pos = viewport()->mapToGlobal(rect.bottomLeft());
+    QPoint pos = viewport()->mapToGlobal(rect.topLeft());
     printTextBlockData(currentCursor, pos);
 }

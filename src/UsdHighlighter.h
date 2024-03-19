@@ -1,15 +1,18 @@
 // UsdHighlighter widget
-#ifndef UsdHighlighter_H
-#define UsdHighlighter_H
+#ifndef USDHIGHLIGHTER_H
+#define USDHIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
 #include <QTextDocument>
 #include <QTextCharFormat>
 #include <QRegularExpression>
 #include <iostream>
+#include "UsdHighlighterSyntax.h"
 
 #define NORMAL_BLOCK 1
 #define MULTILINE_BLOCK 2
+// pair of start and length, which defines a range
+#define RANGE std::pair<qsizetype, qsizetype>
 
 class UsdHighlighter : public QSyntaxHighlighter
 {
@@ -18,27 +21,24 @@ class UsdHighlighter : public QSyntaxHighlighter
 public:
     // UsdHighlighter(QObject *parent = nullptr);
     UsdHighlighter(QTextDocument *parent = nullptr);
-    struct SyntaxRule
-    {
-        QString name;
-        QTextCharFormat format;
-        QRegularExpression pattern;
-        QRegularExpression patternEnd;
-        bool isRange = false;
-        bool isMultiline = false;
-    };
     struct SubBlock
     {
         const SyntaxRule *rule = nullptr;
-        QString content;
-        qsizetype start = 0;
-        qsizetype length = 0;
-        static QString descriptionText(struct SubBlock subBlock)
+        RANGE range;
+        QList<RANGE> captures;
+        static QString descriptionText(struct SubBlock subBlock, QString blockText)
+        {
+            // QString result = QString(subBlock.rule->label);
+            QString result;
+            QTextStream(&result) << "<p><i>" << blockText.sliced(subBlock.range.first, subBlock.range.second) << "</i></p>"
+                                 << "<p>" << QString(subBlock.rule->label) << "</p>";
+            return result;
+        }
+        static QString debugText(struct SubBlock subBlock)
         {
             QString result;
-            QTextStream(&result) << "[" << subBlock.start << ", " << subBlock.start + subBlock.length << ") L=" << subBlock.length << "\n"
-                                 << " rule: " << subBlock.rule->name << "\n"
-                                 << " content '" << subBlock.content;
+            QTextStream(&result) << "[" << subBlock.range.first << ", " << subBlock.range.first + subBlock.range.second << ") L=" << subBlock.range.second
+                                 << " rule: " << subBlock.rule->name;
             return result;
         }
         static void debugPrint(struct SubBlock subBlock)
@@ -46,7 +46,7 @@ public:
             // std::cout << "[" << subBlock.start << ", " << subBlock.start + subBlock.length << ") L=" << subBlock.length << "\n"
             //           << " rule: " << subBlock.rule->name.toStdString() << "\n"
             //           << " content '" << subBlock.content.toStdString() << "'\n";
-            std::cout << SubBlock::descriptionText(subBlock).toStdString() << "'\n";
+            std::cout << SubBlock::debugText(subBlock).toStdString() << "\n";
         }
     };
     struct UsdTextBlockData : public QTextBlockUserData
@@ -65,11 +65,8 @@ protected:
     void highlightBlock(const QString &text) override;
 
 private:
-    QList<SyntaxRule> syntaxRules;
-    // QList<SyntaxRule> multilineRules;
     const SyntaxRule *multiRule = nullptr;
-    void initSyntaxRules();
     UsdTextBlockData *processBlock(const QString &text);
 };
 
-#endif // UsdHighlighter_H
+#endif // USDHIGHLIGHTER_H
