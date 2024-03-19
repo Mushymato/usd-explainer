@@ -38,7 +38,7 @@ public:
             QString result;
             QTextStream(&result) << "[" << subBlock.start << ", " << subBlock.start + subBlock.length << ") L=" << subBlock.length << "\n"
                                  << " rule: " << subBlock.rule->name << "\n"
-                                 << " content '" << subBlock.content << "'\n";
+                                 << " content '" << subBlock.content;
             return result;
         }
         static void debugPrint(struct SubBlock subBlock)
@@ -46,7 +46,7 @@ public:
             // std::cout << "[" << subBlock.start << ", " << subBlock.start + subBlock.length << ") L=" << subBlock.length << "\n"
             //           << " rule: " << subBlock.rule->name.toStdString() << "\n"
             //           << " content '" << subBlock.content.toStdString() << "'\n";
-            std::cout << SubBlock::descriptionText(subBlock).toStdString();
+            std::cout << SubBlock::descriptionText(subBlock).toStdString() << "'\n";
         }
     };
     struct UsdTextBlockData : public QTextBlockUserData

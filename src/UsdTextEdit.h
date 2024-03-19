@@ -13,7 +13,13 @@ public:
 
 public slots:
     void setUsdFile(const QString &filePath);
-    void printTextBlockData();
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+private:
+    void printTextBlockData(QPoint pos);
+    QTextCursor previousTextCursor;
 };
 
 #endif // USDEDIT_H
