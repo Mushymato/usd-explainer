@@ -9,16 +9,17 @@ class UsdTextEdit : public QTextEdit
     Q_OBJECT
 
 public:
+    //! constructor
     UsdTextEdit(QWidget *parent = nullptr);
 
 public slots:
+    //! open USD file
     void setUsdFile(const QString &filePath);
 
-    // protected:
-    //     void mouseReleaseEvent(QMouseEvent *event) override;
-
 private:
+    //! display tooltip for syntax matched in current text block
     void printTextBlockData(QTextCursor currentCursor, QPoint pos);
+    //! callback, display tooltip when text cursor changes
     void handleTextCursorChange();
 };
 

@@ -18,11 +18,6 @@ void MainWindow::about()
                        tr("<p>Highlight and explain syntax components in a USD file</p>"));
 }
 
-// void MainWindow::newFile()
-// {
-//     editor->clear();
-// }
-
 void MainWindow::openFile(const QString &path)
 {
     QString fileName = path;
@@ -56,8 +51,6 @@ void MainWindow::setupFileMenu()
     QMenu *fileMenu = new QMenu(tr("&File"), this);
     menuBar()->addMenu(fileMenu);
 
-    // fileMenu->addAction(tr("&New"), QKeySequence::New,
-    //                     this, &MainWindow::newFile);
     fileMenu->addAction(tr("&Open..."), QKeySequence::Open,
                         this, [this]()
                         { openFile(); });

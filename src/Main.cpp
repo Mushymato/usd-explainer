@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 #include <QApplication>
 
+//! entry point to app
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

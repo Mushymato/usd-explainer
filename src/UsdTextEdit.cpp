@@ -39,12 +39,6 @@ void UsdTextEdit::printTextBlockData(QTextCursor currentCursor, QPoint pos)
     }
 }
 
-// void UsdTextEdit::mouseReleaseEvent(QMouseEvent *event)
-// {
-//     QTextCursor currentCursor = textCursor();
-//     printTextBlockData(currentCursor, event->globalPosition().toPoint());
-// }
-
 void UsdTextEdit::handleTextCursorChange()
 {
     QTextCursor currentCursor = textCursor();

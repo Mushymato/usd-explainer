@@ -107,10 +107,8 @@ UsdHighlighter::UsdTextBlockData *UsdHighlighter::processBlock(const QString &te
 void UsdHighlighter::highlightBlock(const QString &text)
 {
     UsdTextBlockData *blockData = processBlock(text);
-    // std::cout << "BLOCK: '" << text.toStdString() << "'\n";
     for (const SubBlock &subBlock : std::as_const(blockData->subBlocks))
     {
-        // UsdHighlighter::SubBlock::debugPrint(subBlock);
         setFormat(subBlock.range.first, subBlock.range.second, subBlock.rule->styles[0]);
         for (int i = 0; i < subBlock.captures.length(); i++)
         {

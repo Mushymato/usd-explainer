@@ -19,13 +19,18 @@ class UsdHighlighter : public QSyntaxHighlighter
     Q_OBJECT
 
 public:
-    // UsdHighlighter(QObject *parent = nullptr);
+    //! constructor
     UsdHighlighter(QTextDocument *parent = nullptr);
+    //! struct describing info pertaining a section of the text block matched to a syntax rule
     struct SubBlock
     {
+        //! syntax rule that matched this SubBlock
         const SyntaxRule *rule = nullptr;
+        //! range (start, length) of this SubBlock relative to the block
         RANGE range;
+        //! range of capturing groups in this SubBlock
         QList<RANGE> captures;
+        //! text description to be shown in tooltip
         static QString descriptionText(struct SubBlock subBlock, QString blockText)
         {
             // QString result = QString(subBlock.rule->label);
@@ -34,6 +39,7 @@ public:
                                  << "<p>" << QString(subBlock.rule->label) << "</p>";
             return result;
         }
+
         static QString debugText(struct SubBlock subBlock)
         {
             QString result;
@@ -43,14 +49,13 @@ public:
         }
         static void debugPrint(struct SubBlock subBlock)
         {
-            // std::cout << "[" << subBlock.start << ", " << subBlock.start + subBlock.length << ") L=" << subBlock.length << "\n"
-            //           << " rule: " << subBlock.rule->name.toStdString() << "\n"
-            //           << " content '" << subBlock.content.toStdString() << "'\n";
             std::cout << SubBlock::debugText(subBlock).toStdString() << "\n";
         }
     };
+    //! QTextBlockUserData subclass for storage on QTextDocument
     struct UsdTextBlockData : public QTextBlockUserData
     {
+        //! list of discovered SubBlocks for this text block
         QList<SubBlock> subBlocks;
         static void debugPrint(UsdTextBlockData blockData)
         {
@@ -62,10 +67,13 @@ public:
     };
 
 protected:
+    //! process text block for syntax highlighting
     void highlightBlock(const QString &text) override;
 
 private:
+    //! cached multi-line syntax rule
     const SyntaxRule *multiRule = nullptr;
+    //! process text block for syntax highlighting and construct new UsdTextBlockData
     UsdTextBlockData *processBlock(const QString &text);
 };
 
